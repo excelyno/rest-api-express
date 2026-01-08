@@ -1,0 +1,26 @@
+### Get All
+GET http://localhost:3000/users
+
+### Get Detail
+GET http://localhost:3000/users/1
+
+### Create New (POST)
+POST http://localhost:3000/users
+Content-Type: application/json
+
+{
+    "name": "Charlie",
+    "email": "charlie@test.com"
+}
+
+### Update (PUT)
+PUT http://localhost:3000/users/1
+Content-Type: application/json
+
+{
+    "name": "Alpha Updated",
+    "email": "alpha.new@test.com"
+}
+
+### Delete
+DELETE http://localhost:3000/users/2
