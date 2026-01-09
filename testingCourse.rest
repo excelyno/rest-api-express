@@ -1,0 +1,45 @@
+### 1. Tambah Matkul (Valid Data)
+POST http://localhost:3000/courses
+Content-Type: application/json
+
+{
+    "code": "TIK101",
+    "name": "Pemrograman Web Dasar",
+    "credits": 3,
+    "lecturer": "Pak Sandhika",
+    "semester": 1
+}
+
+### 2. Tambah Matkul (Untuk Test Filter)
+POST http://localhost:3000/courses
+Content-Type: application/json
+
+{
+    "code": "SIVK05",
+    "name": "Kecerdasan Buatan",
+    "credits": 4,
+    "lecturer": "Bu Mega",
+    "semester": 5
+}
+
+### 3. Test Validasi Error (SKS Minus / Kode Kembar)
+POST http://localhost:3000/courses
+Content-Type: application/json
+
+{
+    "code": "TIK101", 
+    "name": "Test Error",
+    "credits": -2,
+    "lecturer": "Siapa aja",
+    "semester": 9
+}
+# Ekspektasi: Error karena Kode kembar, SKS minus, atau Semester > 8
+
+### 4. GET Semua Matkul
+GET http://localhost:3000/courses
+
+### 5. GET FILTER: Cari Matkul Semester 5 saja (Logika Semester 5)
+GET http://localhost:3000/courses?semester=5
+
+### 6. GET FILTER: Cari Matkul Dosen Tertentu
+GET http://localhost:3000/courses?lecturer=Pak Sandhika
