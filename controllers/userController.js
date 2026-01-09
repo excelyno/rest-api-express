@@ -1,6 +1,5 @@
 const User = require('../models/userModel');
 
-// 1. Ambil Semua User
 const getAllUsers = async (req, res) => {
     try {
         const users = await User.find();
@@ -10,7 +9,6 @@ const getAllUsers = async (req, res) => {
     }
 };
 
-// 2. Ambil User by ID
 const getUserById = async (req, res) => {
     try {
         const user = await User.findById(req.params.id);
@@ -21,7 +19,6 @@ const getUserById = async (req, res) => {
     }
 };
 
-// 3. Tambah User (Create)
 const createUser = async (req, res) => {
     try {
         const user = await User.create(req.body);
@@ -31,7 +28,6 @@ const createUser = async (req, res) => {
     }
 };
 
-// 4. Update User
 const updateUser = async (req, res) => {
     try {
         const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
@@ -42,7 +38,6 @@ const updateUser = async (req, res) => {
     }
 };
 
-// 5. Hapus User
 const deleteUser = async (req, res) => {
     try {
         const user = await User.findByIdAndDelete(req.params.id);
@@ -53,5 +48,4 @@ const deleteUser = async (req, res) => {
     }
 };
 
-// PENTING: Export semua fungsi dalam object
 module.exports = { getAllUsers, getUserById, createUser, updateUser, deleteUser };
