@@ -1,74 +1,57 @@
-const userModel = require('../models/userModel')
+const User = require('../models/userModel');
 
-//get all user
-const getAllUsers = (req, res) => {
-    const data = userModel.findAll()
-    res.status(200).json({
-        message: 'get all users success',
-        data: data
-    })
-    console.log("akses ke get all users")
-}
-
-//get single user
-const getUserById = (req, res) => {
-    const id = parseInt(req.params.id)
-    const data = userModel.findById(id)
-    
-    if(!data){
-        return res.status(404).json({message: 'User not found'})
+// 1. Ambil Semua User
+const getAllUsers = async (req, res) => {
+    try {
+        const users = await User.find();
+        res.status(200).json({ message: 'Success', data: users });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
     }
-    res.status(200).json({
-        message: "get user details success",
-        data: data
-    })
-}
+};
 
-
-
-//create user (post)
-const createUser = (req, res) => {
-    const {name, email } = req.body
-
-    if(!name || !email){
-        return res.status(400).json({message: 'name and email are required'})
+// 2. Ambil User by ID
+const getUserById = async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id);
+        if (!user) return res.status(404).json({ message: 'User tidak ditemukan' });
+        res.status(200).json({ data: user });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
     }
-    const newUser = userModel.create({name, email})
+};
 
-    res.status(201).json({
-        message: "user created successfully",
-        data: newUser
-    })
-
-}
-
-//update user (put/patch)
-const updateUser = (req, res) => {
-    const id = parseInt(req.params.id)
-    const { name, email} = req.body;
-    const updatedUser = userModel.update(id, {name, email})
-
-    if(!updatedUser){
-        return res.status(404).json({message: 'user not found'})
+// 3. Tambah User (Create)
+const createUser = async (req, res) => {
+    try {
+        const user = await User.create(req.body);
+        res.status(201).json({ message: 'User berhasil dibuat', data: user });
+    } catch (error) {
+        res.status(400).json({ message: error.message });
     }
+};
 
-    res.json({
-        message: 'user updated successfully',
-        data: updatedUser
-    })
-
-}
-
-//delete user (delete)
-const deleteUser = (req, res) => {
-    const id = parseInt(req.params.id)
-    const success = userModel.remove(id)
-    
-    if(!success){
-        return res.status(404).json({ message: 'user not found'})
+// 4. Update User
+const updateUser = async (req, res) => {
+    try {
+        const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        if (!user) return res.status(404).json({ message: 'User tidak ditemukan' });
+        res.status(200).json({ message: 'User updated', data: user });
+    } catch (error) {
+        res.status(400).json({ message: error.message });
     }
+};
 
-    res.json({message: 'User deleted successfully'})
-}
+// 5. Hapus User
+const deleteUser = async (req, res) => {
+    try {
+        const user = await User.findByIdAndDelete(req.params.id);
+        if (!user) return res.status(404).json({ message: 'User tidak ditemukan' });
+        res.status(200).json({ message: 'User berhasil dihapus' });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
 
-module.exports = { getAllUsers , getUserById, createUser, updateUser, deleteUser}
+// PENTING: Export semua fungsi dalam object
+module.exports = { getAllUsers, getUserById, createUser, updateUser, deleteUser };
